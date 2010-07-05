@@ -4,7 +4,6 @@
  */
 package com.smartitengineering.demo.roa.services;
 
-import com.smartitengineering.demo.roa.domains.Author;
 import com.smartitengineering.demo.roa.domains.Book;
 import java.util.Collection;
 
@@ -22,5 +21,7 @@ public interface BookService {
 
   public Book getByIsbn(String isbn);
 
-  public Collection<Book> getBooksForAuthor(Author author);
+  //Violates principals of API design should have used book filter like object!
+  public Collection<Book> getBooks(String authorNickNameLike, String bookNameLike, String isbn, boolean isSmallerThan,
+                                   int count);
 }

@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class Author extends AbstractPersistentDTO<Author> {
 
+  public static final String UNIQUE_NICK_NAME = "uniqueNickname";
+
   private String nationalId;
   private String name;
   private String uniqueNickname;
