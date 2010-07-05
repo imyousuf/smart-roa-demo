@@ -17,6 +17,30 @@ public class Author extends AbstractPersistentDTO<Author> {
   private String name;
   private String uniqueNickname;
 
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getNationalId() {
+    return nationalId;
+  }
+
+  public void setNationalId(String nationalId) {
+    this.nationalId = nationalId;
+  }
+
+  public String getUniqueNickname() {
+    return uniqueNickname;
+  }
+
+  public void setUniqueNickname(String uniqueNickname) {
+    this.uniqueNickname = uniqueNickname;
+  }
+
   @Override
   public boolean isValid() {
     return StringUtils.isNotBlank(uniqueNickname) && StringUtils.isNotBlank(name);

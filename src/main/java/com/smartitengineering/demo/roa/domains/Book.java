@@ -20,8 +20,18 @@ public class Book extends AbstractPersistentDTO<Book> {
 
   private String isbn;
   private String name;
-  @JsonIgnore
   private List<Author> authors;
+  //The following will not be mapped in HBM its only for de/serialization
+  private List<Integer> authorIds;
+
+  @JsonIgnore
+  public List<Integer> getAuthorIds() {
+    return authorIds;
+  }
+
+  public void setAuthorIds(List<Integer> authorIds) {
+    this.authorIds = authorIds;
+  }
 
   @JsonIgnore
   public List<Author> getAuthors() {
