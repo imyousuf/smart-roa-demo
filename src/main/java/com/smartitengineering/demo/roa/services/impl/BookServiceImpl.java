@@ -4,11 +4,14 @@
  */
 package com.smartitengineering.demo.roa.services.impl;
 
+import com.smartitengineering.dao.common.queryparam.Order;
+import com.smartitengineering.dao.common.queryparam.QueryParameterFactory;
 import com.smartitengineering.dao.impl.hibernate.AbstractCommonDaoImpl;
 import com.smartitengineering.demo.roa.domains.Author;
 import com.smartitengineering.demo.roa.domains.Book;
 import com.smartitengineering.demo.roa.services.BookService;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 
 /**
  *
@@ -37,10 +40,12 @@ public class BookServiceImpl extends AbstractCommonDaoImpl<Book> implements Book
 
   @Override
   public Book getByIsbn(String isbn) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return getSingle(QueryParameterFactory.getStringLikePropertyParam(Book.ISBN, isbn));
   }
 
+  @Override
   public Collection<Book> getBooksForAuthor(Author author) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    return new LinkedHashSet<Book>(getList(QueryParameterFactory.getEqualPropertyParam(Book.AUTHORS, author), QueryParameterFactory.
+        getOrderByParam(Book.ISBN, Order.DESC)));
   }
 }

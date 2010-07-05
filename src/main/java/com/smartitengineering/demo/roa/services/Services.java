@@ -17,17 +17,23 @@ public class Services {
 
   @InjectableField
   private BookService bookService;
+  @InjectableField
+  private AuthorService authorService;
 
-  private Services() {}
+  private Services() {
+  }
 
   public BookService getBookService() {
     return bookService;
   }
 
+  public AuthorService getAuthorService() {
+    return authorService;
+  }
   private static Services services;
 
   public static Services getInstance() {
-    if(services == null) {
+    if (services == null) {
       services = new Services();
       BeanFactoryRegistrar.aggregate(services);
     }
