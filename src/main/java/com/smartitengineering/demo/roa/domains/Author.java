@@ -7,6 +7,7 @@ package com.smartitengineering.demo.roa.domains;
 import com.smartitengineering.domain.AbstractPersistentDTO;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
@@ -21,10 +22,12 @@ public class Author extends AbstractPersistentDTO<Author> {
   private String uniqueNickname;
   private Date lastModifiedDate;
 
+  @JsonIgnore
   public Date getLastModifiedDate() {
     return lastModifiedDate;
   }
 
+  @JsonIgnore
   public void setLastModifiedDate(Date lastModifiedDate) {
     this.lastModifiedDate = lastModifiedDate;
   }
