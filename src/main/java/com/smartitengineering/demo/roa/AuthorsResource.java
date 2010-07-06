@@ -32,6 +32,7 @@ public class AuthorsResource extends AbstractResource {
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+      ex.printStackTrace();
     }
     return responseBuilder.build();
   }

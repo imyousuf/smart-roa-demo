@@ -8,6 +8,7 @@ import com.smartitengineering.demo.roa.domains.Author;
 import com.smartitengineering.demo.roa.domains.Book;
 import com.smartitengineering.demo.roa.services.AuthorNotFoundException;
 import com.smartitengineering.demo.roa.services.Services;
+import java.util.Collection;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -111,11 +112,11 @@ public class BookResource extends AbstractResource {
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(BOOK_CONTENT_URI_BUILDER.clone().build(book).toString());
+    altLink.setHref(BOOK_CONTENT_URI_BUILDER.clone().build(book.getIsbn()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     bookFeed.addLink(altLink);
-    List<Author> authors = book.getAuthors();
+    Collection<Author> authors = book.getAuthors();
     for (Author author : authors) {
       Entry entry = abderaFactory.newEntry();
       entry.setId(author.getNationalId());

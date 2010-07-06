@@ -19,6 +19,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -34,12 +35,12 @@ import org.apache.abdera.model.Link;
 @Path("/books")
 public class BooksResource extends AbstractResource {
 
-  static final UriBuilder BOOK_URI_BUILDER;
+  static final UriBuilder BOOKS_URI_BUILDER;
   static final UriBuilder BOOKS_AFTER_ISBN_BUILDER;
   static final UriBuilder BOOKS_BEFORE_ISBN_BUILDER;
 
   static {
-    BOOK_URI_BUILDER = UriBuilder.fromResource(BookResource.class);
+    BOOKS_URI_BUILDER = UriBuilder.fromResource(BooksResource.class);
     BOOKS_BEFORE_ISBN_BUILDER = UriBuilder.fromResource(BooksResource.class);
     try {
       BOOKS_BEFORE_ISBN_BUILDER.path(BooksResource.class.getMethod("getBefore", String.class));
@@ -95,16 +96,24 @@ public class BooksResource extends AbstractResource {
     Collection<Book> books = Services.getInstance().getBookService().getBooks(authorNickName, nameLike, isbn, isBefore,
                                                                               count);
     if (books != null && !books.isEmpty()) {
+      MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
       List<Book> bookList = new ArrayList<Book>(books);
       Link nextLink = abderaFactory.newLink();
-      nextLink.setRel(Link.REL_NEXT);
-      Book lastBook = bookList.get(books.size() - 1);
-      nextLink.setHref(BOOKS_BEFORE_ISBN_BUILDER.clone().build(lastBook.getIsbn()).toString());
+      nextLink.setRel(Link.REL_PREVIOUS);
+      Book lastBook = bookList.get(0);
+      final UriBuilder nextUri = BOOKS_AFTER_ISBN_BUILDER.clone();
+      final UriBuilder prevUri = BOOKS_BEFORE_ISBN_BUILDER.clone();
+      for (String key : queryParams.keySet()) {
+        final Object[] values = queryParams.get(key).toArray();
+        nextUri.queryParam(key, values);
+        prevUri.queryParam(key, values);
+      }
+      nextLink.setHref(nextUri.build(lastBook.getIsbn()).toString());
       atomFeed.addLink(nextLink);
       Link prevLink = abderaFactory.newLink();
-      prevLink.setRel(Link.REL_PREVIOUS);
+      prevLink.setRel(Link.REL_NEXT);
       Book firstBook = bookList.get(books.size() - 1);
-      prevLink.setHref(BOOKS_AFTER_ISBN_BUILDER.clone().build(firstBook.getIsbn()).toString());
+      prevLink.setHref(prevUri.build(firstBook.getIsbn()).toString());
       atomFeed.addLink(prevLink);
       for (Book book : books) {
         Entry bookEntry = abderaFactory.newEntry();
@@ -140,6 +149,7 @@ public class BooksResource extends AbstractResource {
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
+      ex.printStackTrace();
     }
     return responseBuilder.build();
   }
