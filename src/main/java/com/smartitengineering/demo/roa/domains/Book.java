@@ -5,8 +5,10 @@
 package com.smartitengineering.demo.roa.domains;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -21,7 +23,7 @@ public class Book extends AbstractPersistentDTO<Book> {
   public static final String AUTHORS = "authors";
   private String isbn;
   private String name;
-  private List<Author> authors;
+  private Set<Author> authors;
   //The following will not be mapped in HBM its only for de/serialization
   private List<Integer> authorIds;
   private Date lastModifiedDate;
@@ -46,12 +48,12 @@ public class Book extends AbstractPersistentDTO<Book> {
   }
 
   @JsonIgnore
-  public List<Author> getAuthors() {
+  public Set<Author> getAuthors() {
     return authors;
   }
 
   @JsonIgnore
-  public void setAuthors(List<Author> authors) {
+  public void setAuthors(Set<Author> authors) {
     this.authors = authors;
   }
 
@@ -72,9 +74,10 @@ public class Book extends AbstractPersistentDTO<Book> {
   }
 
   @Override
+  @JsonIgnore
   public boolean isValid() {
-    List<Author> authors = getAuthors();
-    return StringUtils.isNotBlank(isbn) && StringUtils.isNotBlank(name) && authors != null &&
-        !authors.isEmpty();
+    Collection<Author> authorCollection = getAuthors();
+    return StringUtils.isNotBlank(isbn) && StringUtils.isNotBlank(name) && authorCollection != null &&
+        !authorCollection.isEmpty();
   }
 }

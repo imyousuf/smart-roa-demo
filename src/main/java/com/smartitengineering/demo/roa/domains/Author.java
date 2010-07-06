@@ -57,6 +57,7 @@ public class Author extends AbstractPersistentDTO<Author> {
   }
 
   @Override
+  @JsonIgnore
   public boolean isValid() {
     return StringUtils.isNotBlank(uniqueNickname) && StringUtils.isNotBlank(name);
   }
