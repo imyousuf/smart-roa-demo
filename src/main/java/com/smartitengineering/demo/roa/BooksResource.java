@@ -133,6 +133,7 @@ public class BooksResource extends AbstractResource {
       Services.getInstance().getAuthorService().populateAuthor(book);
       Services.getInstance().getBookService().save(book);
       responseBuilder = Response.status(Status.CREATED);
+      responseBuilder.location(BookResource.BOOK_URI_BUILDER.clone().build(book.getIsbn()));
     }
     catch (AuthorNotFoundException ex) {
       responseBuilder = Response.status(Status.BAD_REQUEST);
