@@ -7,5 +7,6 @@
         <version column="version" name="version"/>
         <property column="national_id" length="255" name="nationalId" type="java.lang.String"/>
         <property column="name" length="255" name="name" type="java.lang.String"/>
+        <property column="date_last_modifed" length="255" name="lastModifiedDate" type="java.util.Date"/>
     </class>
 </hibernate-mapping>

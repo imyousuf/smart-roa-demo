@@ -6,6 +6,7 @@
         <id column="isbn" length="200" name="isbn" type="java.lang.String"/>
         <version column="version" name="version"/>
         <property column="name" length="255" name="name" not-null="true" type="java.lang.String"/>
+        <property column="date_last_modifed" length="255" name="lastModifiedDate" type="java.util.Date"/>
         <set name="authors" lazy="false" outer-join="true" cascade="all" table="book_author" inverse="false">
             <key column="book_id" />
             <many-to-many class="com.smartitengineering.bookstore.domain.Author" column="author_id" lazy="false" outer-join="true" />
