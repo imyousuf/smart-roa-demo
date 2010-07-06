@@ -19,7 +19,6 @@ public class Book extends AbstractPersistentDTO<Book> {
   public static final String ISBN = "isbn";
   public static final String NAME = "name";
   public static final String AUTHORS = "authors";
-
   private String isbn;
   private String name;
   private List<Author> authors;
@@ -74,6 +73,8 @@ public class Book extends AbstractPersistentDTO<Book> {
 
   @Override
   public boolean isValid() {
-    return StringUtils.isNotBlank(isbn) && StringUtils.isNotBlank(name);
+    List<Author> authors = getAuthors();
+    return StringUtils.isNotBlank(isbn) && StringUtils.isNotBlank(name) && authors != null &&
+        !authors.isEmpty();
   }
 }
