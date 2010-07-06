@@ -9,7 +9,6 @@ import com.smartitengineering.demo.roa.domains.Book;
 import com.smartitengineering.demo.roa.services.AuthorNotFoundException;
 import com.smartitengineering.demo.roa.services.Services;
 import java.util.Collection;
-import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
