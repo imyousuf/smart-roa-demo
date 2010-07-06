@@ -18,13 +18,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriBuilder;
 
 /**
  *
  * @author imyousuf
  */
-@Path("/books/{isbn}")
+@Path("/books/isbn/{isbn}")
 public class BookResource {
+
+  static final UriBuilder BOOK_URI_BUILDER = UriBuilder.fromResource(BookResource.class);
 
   private Book book;
 

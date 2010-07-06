@@ -16,6 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 public class Book extends AbstractPersistentDTO<Book> {
 
   public static final String ISBN = "isbn";
+  public static final String NAME = "name";
   public static final String AUTHORS = "authors";
 
   private String isbn;
