@@ -69,7 +69,6 @@ public class BookResource extends AbstractResource {
   }
 
   @PUT
-  @POST
   @Produces(MediaType.APPLICATION_ATOM_XML)
   @Consumes(MediaType.APPLICATION_JSON)
   public Response update(Book newBook) {
@@ -87,6 +86,13 @@ public class BookResource extends AbstractResource {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
     }
     return responseBuilder.build();
+  }
+
+  @POST
+  @Produces(MediaType.APPLICATION_ATOM_XML)
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response ammend(Book newBook) {
+    return update(newBook);
   }
 
   @DELETE
