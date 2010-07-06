@@ -5,6 +5,7 @@
 package com.smartitengineering.demo.roa.domains;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -24,6 +25,15 @@ public class Book extends AbstractPersistentDTO<Book> {
   private List<Author> authors;
   //The following will not be mapped in HBM its only for de/serialization
   private List<Integer> authorIds;
+  private Date lastModifiedDate;
+
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    this.lastModifiedDate = lastModifiedDate;
+  }
 
   @JsonIgnore
   public List<Integer> getAuthorIds() {
