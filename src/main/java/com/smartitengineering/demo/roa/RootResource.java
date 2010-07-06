@@ -4,6 +4,7 @@
  */
 package com.smartitengineering.demo.roa;
 
+import java.util.Date;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -20,13 +21,15 @@ import org.apache.abdera.model.Link;
  * @author imyousuf
  */
 @Path("/")
-public class RootResource {
+public class RootResource extends AbstractResource {
+
+  private static final Date INIT_DATE = new Date();
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
   public Response get() {
     ResponseBuilder responseBuilder = Response.ok();
-    Feed atomFeed = Abdera.getNewFactory().newFeed();
+    Feed atomFeed = getFeed("ROA Demo", INIT_DATE);
     Link booksLink = Abdera.getNewFactory().newLink();
     booksLink.setHref(UriBuilder.fromResource(BooksResource.class).build().toString());
     booksLink.setRel("books");
