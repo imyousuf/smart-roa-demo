@@ -9,6 +9,7 @@ import com.smartitengineering.demo.roa.services.AuthorNotFoundException;
 import com.smartitengineering.demo.roa.services.Services;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,7 +23,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
-import org.apache.abdera.Abdera;
+import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.apache.abdera.model.Link;
 
@@ -31,7 +32,7 @@ import org.apache.abdera.model.Link;
  * @author imyousuf
  */
 @Path("/books")
-public class BooksResource {
+public class BooksResource extends AbstractResource {
 
   static final UriBuilder BOOK_URI_BUILDER;
   static final UriBuilder BOOKS_AFTER_ISBN_BUILDER;
@@ -54,15 +55,12 @@ public class BooksResource {
       throw new InstantiationError();
     }
   }
-  private
   @QueryParam("name")
-  String nameLike;
-  private
+  private String nameLike;
   @QueryParam("author_nick")
-  String authorNickName;
-  private
+  private String authorNickName;
   @QueryParam("count")
-  Integer count;
+  private Integer count;
 
   @GET
   @Produces(MediaType.APPLICATION_ATOM_XML)
@@ -89,8 +87,8 @@ public class BooksResource {
       count = 10;
     }
     ResponseBuilder responseBuilder = Response.ok();
-    Feed atomFeed = Abdera.getNewFactory().newFeed();
-    Link booksLink = Abdera.getNewFactory().newLink();
+    Feed atomFeed = getFeed("Books", new Date());
+    Link booksLink = abderaFactory.newLink();
     booksLink.setHref(UriBuilder.fromResource(RootResource.class).build().toString());
     booksLink.setRel("root");
     atomFeed.addLink(booksLink);
@@ -98,18 +96,24 @@ public class BooksResource {
                                                                               count);
     if (books != null && !books.isEmpty()) {
       List<Book> bookList = new ArrayList<Book>(books);
-      Link nextLink = Abdera.getNewFactory().newLink();
-      nextLink.setRel("next");
+      Link nextLink = abderaFactory.newLink();
+      nextLink.setRel(Link.REL_NEXT);
       Book lastBook = bookList.get(books.size() - 1);
       nextLink.setHref(BOOKS_BEFORE_ISBN_BUILDER.clone().build(lastBook.getIsbn()).toString());
       atomFeed.addLink(nextLink);
-      Link prevLink = Abdera.getNewFactory().newLink();
-      prevLink.setRel("prev");
+      Link prevLink = abderaFactory.newLink();
+      prevLink.setRel(Link.REL_PREVIOUS);
       Book firstBook = bookList.get(books.size() - 1);
       prevLink.setHref(BOOKS_AFTER_ISBN_BUILDER.clone().build(firstBook.getIsbn()).toString());
       atomFeed.addLink(prevLink);
       for (Book book : books) {
-        //ToDo Create entries
+        Entry bookEntry = abderaFactory.newEntry();
+        Link bookLink = abderaFactory.newLink();
+        bookLink.setHref(BookResource.BOOK_URI_BUILDER.clone().build(book.getIsbn()).toString());
+        bookLink.setRel(Link.REL_EDIT);
+        bookLink.setTitle(book.getName());
+        bookEntry.setTitle(book.getName());
+        bookEntry.addLink(bookLink);
       }
     }
     responseBuilder.entity(atomFeed);
