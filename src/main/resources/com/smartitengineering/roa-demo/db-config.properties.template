@@ -3,4 +3,4 @@ com.smartitengineering.event.spi.db.connection.url=jdbc:derby:target/TestDB;crea
 com.smartitengineering.event.spi.db.connection.username=
 com.smartitengineering.event.spi.db.connection.password=
 com.smartitengineering.event.spi.db.dialect=org.hibernate.dialect.DerbyDialect
-com.smartitengineering.event.spi.db.show_sql=false
+com.smartitengineering.event.spi.db.show_sql=true

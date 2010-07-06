@@ -2,14 +2,17 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.demo.roa.domains.Book" table="book">
-        <id column="isbn" length="200" name="isbn" type="java.lang.String"/>
-        <version column="version" name="version"/>
-        <property column="name" length="255" name="name" not-null="true" type="java.lang.String"/>
-        <property column="date_last_modifed" length="255" name="lastModifiedDate" type="java.util.Date"/>
-        <set name="authors" lazy="false" outer-join="true" cascade="all" table="book_author" inverse="false">
-            <key column="book_id" />
-            <many-to-many class="com.smartitengineering.bookstore.domain.Author" column="author_id" lazy="false" outer-join="true" />
-        </set>
-    </class>
+  <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.demo.roa.domains.Book" table="book">
+    <id column="id" name="id" type="integer">
+      <generator class="increment" />
+    </id>
+    <version column="version" name="version"/>
+    <property column="isbn" length="200" name="isbn" not-null="true" type="string" unique="true"/>
+    <property column="name" length="255" name="name" not-null="true" type="java.lang.String"/>
+    <property column="date_last_modifed" length="255" name="lastModifiedDate" type="java.util.Date"/>
+    <set name="authors" lazy="false" outer-join="true" cascade="all" table="book_author" inverse="false">
+      <key column="book_id" />
+      <many-to-many class="com.smartitengineering.demo.roa.domains.Author" column="author_id" lazy="false" outer-join="true" />
+    </set>
+  </class>
 </hibernate-mapping>

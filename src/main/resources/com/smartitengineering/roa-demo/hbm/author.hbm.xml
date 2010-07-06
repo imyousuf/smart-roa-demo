@@ -2,11 +2,14 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.demo.roa.domains.Author" table="author">
-        <id column="nick_name" length="200" name="uniqueNickName" type="string"/>
-        <version column="version" name="version"/>
-        <property column="national_id" length="255" name="nationalId" type="java.lang.String"/>
-        <property column="name" length="255" name="name" type="java.lang.String"/>
-        <property column="date_last_modifed" length="255" name="lastModifiedDate" type="java.util.Date"/>
-    </class>
+  <class dynamic-insert="false" dynamic-update="false" name="com.smartitengineering.demo.roa.domains.Author" table="author">
+    <id column="id" name="id" type="integer">
+      <generator class="increment" />
+    </id>
+    <version column="version" name="version"/>
+    <property column="nick_name" length="200" name="uniqueNickname" not-null="true" type="string" unique="true"/>
+    <property column="national_id" length="255" name="nationalId" type="java.lang.String"/>
+    <property column="name" length="255" name="name" type="java.lang.String"/>
+    <property column="date_last_modifed" length="255" name="lastModifiedDate" type="java.util.Date"/>
+  </class>
 </hibernate-mapping>
