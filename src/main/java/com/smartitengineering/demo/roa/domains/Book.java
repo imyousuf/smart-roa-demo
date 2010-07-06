@@ -27,10 +27,12 @@ public class Book extends AbstractPersistentDTO<Book> {
   private List<Integer> authorIds;
   private Date lastModifiedDate;
 
+  @JsonIgnore
   public Date getLastModifiedDate() {
     return lastModifiedDate;
   }
 
+  @JsonIgnore
   public void setLastModifiedDate(Date lastModifiedDate) {
     this.lastModifiedDate = lastModifiedDate;
   }

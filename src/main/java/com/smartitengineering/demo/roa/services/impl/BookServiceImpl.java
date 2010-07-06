@@ -15,6 +15,7 @@ import com.smartitengineering.demo.roa.domains.Book;
 import com.smartitengineering.demo.roa.services.BookService;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -31,16 +32,27 @@ public class BookServiceImpl extends AbstractCommonDaoImpl<Book> implements Book
 
   @Override
   public void save(Book book) {
+    if(!book.isValid()) {
+      throw new IllegalStateException("Book is not valid!");
+    }
+    book.setLastModifiedDate(new Date());
     createEntity(book);
   }
 
   @Override
   public void update(Book book) {
+    if(!book.isValid()) {
+      throw new IllegalStateException("Book is not valid!");
+    }
+    book.setLastModifiedDate(new Date());
     update(new Book[]{book});
   }
 
   @Override
   public void delete(Book book) {
+    if(!book.isValid()) {
+      throw new IllegalStateException("Book is not valid!");
+    }
     super.delete(book);
   }
 
