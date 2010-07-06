@@ -5,6 +5,7 @@
 package com.smartitengineering.demo.roa.domains;
 
 import com.smartitengineering.domain.AbstractPersistentDTO;
+import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -18,6 +19,15 @@ public class Author extends AbstractPersistentDTO<Author> {
   private String nationalId;
   private String name;
   private String uniqueNickname;
+  private Date lastModifiedDate;
+
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
+
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    this.lastModifiedDate = lastModifiedDate;
+  }
 
   public String getName() {
     return name;
