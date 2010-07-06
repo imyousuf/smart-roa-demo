@@ -108,12 +108,16 @@ public class BooksResource extends AbstractResource {
       atomFeed.addLink(prevLink);
       for (Book book : books) {
         Entry bookEntry = abderaFactory.newEntry();
+        bookEntry.setId(book.getIsbn());
+        bookEntry.setTitle(book.getName());
+        bookEntry.setSummary(book.getName());
+        bookEntry.setUpdated(book.getLastModifiedDate());
         Link bookLink = abderaFactory.newLink();
         bookLink.setHref(BookResource.BOOK_URI_BUILDER.clone().build(book.getIsbn()).toString());
-        bookLink.setRel(Link.REL_EDIT);
-        bookLink.setTitle(book.getName());
-        bookEntry.setTitle(book.getName());
+        bookLink.setRel(Link.REL_ALTERNATE);
+        bookLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
         bookEntry.addLink(bookLink);
+        atomFeed.addEntry(bookEntry);
       }
     }
     responseBuilder.entity(atomFeed);
