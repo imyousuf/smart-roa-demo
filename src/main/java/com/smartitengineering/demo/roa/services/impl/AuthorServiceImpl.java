@@ -9,8 +9,8 @@ import com.smartitengineering.demo.roa.domains.Author;
 import com.smartitengineering.demo.roa.domains.Book;
 import com.smartitengineering.demo.roa.services.AuthorNotFoundException;
 import com.smartitengineering.demo.roa.services.AuthorService;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -54,7 +54,7 @@ public class AuthorServiceImpl extends AbstractCommonDaoImpl<Author> implements 
       if (authors == null || authorIds.size() != authors.size()) {
         throw new AuthorNotFoundException();
       }
-      book.setAuthors(new ArrayList<Author>(authors));
+      book.setAuthors(new LinkedHashSet<Author>(authors));
     }
   }
 }
