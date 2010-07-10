@@ -7,6 +7,7 @@ package com.smartitengineering.demo.roa;
 import com.smartitengineering.demo.roa.domains.Book;
 import com.smartitengineering.demo.roa.services.AuthorNotFoundException;
 import com.smartitengineering.demo.roa.services.Services;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -142,7 +143,10 @@ public class BooksResource extends AbstractResource {
       Services.getInstance().getAuthorService().populateAuthor(book);
       Services.getInstance().getBookService().save(book);
       responseBuilder = Response.status(Status.CREATED);
-      responseBuilder.location(BookResource.BOOK_URI_BUILDER.clone().build(book.getIsbn()));
+      final UriBuilder clone = BookResource.BOOK_URI_BUILDER.clone();
+      setBaseUri(clone);
+      final URI bookUri = clone.build(book.getIsbn());
+      responseBuilder.location(bookUri);
     }
     catch (AuthorNotFoundException ex) {
       responseBuilder = Response.status(Status.BAD_REQUEST);

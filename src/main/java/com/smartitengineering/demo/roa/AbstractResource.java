@@ -4,8 +4,10 @@
  */
 package com.smartitengineering.demo.roa;
 
+import java.net.URI;
 import java.util.Date;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import org.apache.abdera.Abdera;
 import org.apache.abdera.factory.Factory;
@@ -55,5 +57,12 @@ public abstract class AbstractResource {
     feed.addLink(getSelfLink());
     feed.addAuthor(getDefaultAuthor());
     return feed;
+  }
+
+  protected void setBaseUri(final UriBuilder builder) throws IllegalArgumentException {
+    final URI baseUri = uriInfo.getBaseUri();
+    builder.host(baseUri.getHost());
+    builder.port(baseUri.getPort());
+    builder.scheme(baseUri.getScheme());
   }
 }

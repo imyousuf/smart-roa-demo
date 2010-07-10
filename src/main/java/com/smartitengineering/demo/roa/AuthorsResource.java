@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriBuilder;
 
 /**
  *
@@ -28,7 +29,9 @@ public class AuthorsResource extends AbstractResource {
     try {
       Services.getInstance().getAuthorService().save(author);
       responseBuilder = Response.status(Status.CREATED);
-      responseBuilder.location(AuthorResource.AUTHOR_URI_BUILDER.clone().build(author.getId()));
+      UriBuilder authorClone = AuthorResource.AUTHOR_URI_BUILDER.clone();
+      setBaseUri(authorClone);
+      responseBuilder.location(authorClone.build(author.getId()));
     }
     catch (Exception ex) {
       responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
