@@ -109,7 +109,7 @@ public class BookResource extends AbstractResource {
     editLink.setRel(Link.REL_EDIT);
     editLink.setMimeType(MediaType.APPLICATION_JSON);
     Link altLink = abderaFactory.newLink();
-    altLink.setHref(BOOK_CONTENT_URI_BUILDER.clone().build(book.getIsbn()).toString());
+    altLink.setHref(BOOK_CONTENT_URI_BUILDER.build(book.getIsbn()).toString());
     altLink.setRel(Link.REL_ALTERNATE);
     altLink.setMimeType(MediaType.APPLICATION_JSON);
     bookFeed.addLink(altLink);
@@ -123,7 +123,7 @@ public class BookResource extends AbstractResource {
       Link authAltLink = abderaFactory.newLink();
       authAltLink.setRel(Link.REL_ALTERNATE);
       authAltLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
-      authAltLink.setHref(AuthorResource.AUTHOR_URI_BUILDER.clone().build(author.getId()).toString());
+      authAltLink.setHref(AuthorResource.AUTHOR_URI_BUILDER.build(author.getId()).toString());
       entry.addLink(authAltLink);
       bookFeed.addEntry(entry);
     }

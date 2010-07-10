@@ -94,6 +94,10 @@ public class BooksResource extends AbstractResource {
     booksLink.setHref(UriBuilder.fromResource(RootResource.class).build().toString());
     booksLink.setRel("root");
     atomFeed.addLink(booksLink);
+    Link firstLink = abderaFactory.newLink();
+    firstLink.setHref(BOOKS_URI_BUILDER.build().toString());
+    firstLink.setRel(Link.REL_FIRST);
+    atomFeed.addLink(firstLink);
     Collection<Book> books = Services.getInstance().getBookService().getBooks(authorNickName, nameLike, isbn, isBefore,
                                                                               count);
     if (books != null && !books.isEmpty()) {
@@ -123,7 +127,7 @@ public class BooksResource extends AbstractResource {
         bookEntry.setSummary(book.getName());
         bookEntry.setUpdated(book.getLastModifiedDate());
         Link bookLink = abderaFactory.newLink();
-        bookLink.setHref(BookResource.BOOK_URI_BUILDER.clone().build(book.getIsbn()).toString());
+        bookLink.setHref(BookResource.BOOK_URI_BUILDER.build(book.getIsbn()).toString());
         bookLink.setRel(Link.REL_ALTERNATE);
         bookLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
         bookEntry.addLink(bookLink);
