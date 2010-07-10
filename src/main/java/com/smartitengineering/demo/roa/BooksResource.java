@@ -35,6 +35,8 @@ import org.apache.abdera.model.Link;
  */
 @Path("/books")
 public class BooksResource extends AbstractResource {
+  public static final String APPLICATION_OPENSEARCHDESCRIPTION_XML = "application/opensearchdescription+xml";
+  public static final String REL_SEARCH = "search";
 
   static final UriBuilder BOOKS_URI_BUILDER;
   static final UriBuilder BOOKS_AFTER_ISBN_BUILDER;
@@ -93,19 +95,31 @@ public class BooksResource extends AbstractResource {
     Link booksLink = abderaFactory.newLink();
     booksLink.setHref(UriBuilder.fromResource(RootResource.class).build().toString());
     booksLink.setRel("root");
+    booksLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
+    booksLink.setTitle("Root");
     atomFeed.addLink(booksLink);
     Link firstLink = abderaFactory.newLink();
     firstLink.setHref(BOOKS_URI_BUILDER.build().toString());
     firstLink.setRel(Link.REL_FIRST);
+    firstLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
+    firstLink.setTitle("First Page of Books");
     atomFeed.addLink(firstLink);
+    Link searchLink = abderaFactory.newLink();
+    searchLink.setHref(BOOKS_URI_BUILDER.build().toString());
+    searchLink.setRel(REL_SEARCH);
+    searchLink.setMimeType(APPLICATION_OPENSEARCHDESCRIPTION_XML);
+    searchLink.setTitle("Book Search");
+    atomFeed.addLink(searchLink);
+    Link altLink = abderaFactory.newLink();
+    altLink.setHref(BOOKS_URI_BUILDER.build().toString());
+    altLink.setRel(Link.REL_ALTERNATE);
+    altLink.setMimeType(APPLICATION_OPENSEARCHDESCRIPTION_XML);
+    altLink.setTitle("Book Search");
+    atomFeed.addLink(altLink);
     Collection<Book> books = Services.getInstance().getBookService().getBooks(authorNickName, nameLike, isbn, isBefore,
                                                                               count);
     if (books != null && !books.isEmpty()) {
       MultivaluedMap<String, String> queryParams = uriInfo.getQueryParameters();
-      List<Book> bookList = new ArrayList<Book>(books);
-      Link nextLink = abderaFactory.newLink();
-      nextLink.setRel(Link.REL_PREVIOUS);
-      Book lastBook = bookList.get(0);
       final UriBuilder nextUri = BOOKS_AFTER_ISBN_BUILDER.clone();
       final UriBuilder prevUri = BOOKS_BEFORE_ISBN_BUILDER.clone();
       for (String key : queryParams.keySet()) {
@@ -113,23 +127,33 @@ public class BooksResource extends AbstractResource {
         nextUri.queryParam(key, values);
         prevUri.queryParam(key, values);
       }
+      List<Book> bookList = new ArrayList<Book>(books);
+      Link nextLink = abderaFactory.newLink();
+      nextLink.setRel(Link.REL_PREVIOUS);
+      Book lastBook = bookList.get(0);
       nextLink.setHref(nextUri.build(lastBook.getIsbn()).toString());
+      nextLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
+      nextLink.setTitle("Next");
       atomFeed.addLink(nextLink);
       Link prevLink = abderaFactory.newLink();
       prevLink.setRel(Link.REL_NEXT);
       Book firstBook = bookList.get(books.size() - 1);
       prevLink.setHref(prevUri.build(firstBook.getIsbn()).toString());
+      prevLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
+      prevLink.setTitle("Previous");
       atomFeed.addLink(prevLink);
       for (Book book : books) {
         Entry bookEntry = abderaFactory.newEntry();
         bookEntry.setId(book.getIsbn());
-        bookEntry.setTitle(book.getName());
-        bookEntry.setSummary(book.getName());
+        final String bookName = book.getName();
+        bookEntry.setTitle(bookName);
+        bookEntry.setSummary(bookName);
         bookEntry.setUpdated(book.getLastModifiedDate());
         Link bookLink = abderaFactory.newLink();
         bookLink.setHref(BookResource.BOOK_URI_BUILDER.build(book.getIsbn()).toString());
         bookLink.setRel(Link.REL_ALTERNATE);
         bookLink.setMimeType(MediaType.APPLICATION_ATOM_XML);
+        bookLink.setTitle(bookName);
         bookEntry.addLink(bookLink);
         atomFeed.addEntry(bookEntry);
       }
