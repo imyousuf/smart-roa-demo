@@ -75,7 +75,7 @@ public class BookResource extends AbstractResource {
     ResponseBuilder responseBuilder = Response.status(Status.SERVICE_UNAVAILABLE);
     try {
       Services.getInstance().getAuthorService().populateAuthor(newBook);
-      Services.getInstance().getBookService().save(newBook);
+      Services.getInstance().getBookService().update(newBook);
       book = Services.getInstance().getBookService().getByIsbn(newBook.getIsbn());
       responseBuilder = Response.ok(getBookFeed());
     }
@@ -104,8 +104,6 @@ public class BookResource extends AbstractResource {
 
   private Feed getBookFeed() throws UriBuilderException, IllegalArgumentException {
     Feed bookFeed = getFeed(book.getName(), book.getLastModifiedDate());
-    bookFeed.setTitle(book.getName());
-    bookFeed.addLink(getSelfLink());
     Link editLink = abderaFactory.newLink();
     editLink.setHref(uriInfo.getRequestUri().toString());
     editLink.setRel(Link.REL_EDIT);
